@@ -11,9 +11,24 @@ const regions = {
 		recovered: 0,
 		critical: 0,
 	},
-	america: {},
-	europe: {},
-	asia: {},
+	americas: {
+		deaths: 0,
+		confirmed: 0,
+		recovered: 0,
+		critical: 0,
+	},
+	europe: {
+		deaths: 0,
+		confirmed: 0,
+		recovered: 0,
+		critical: 0,
+	},
+	asia: {
+		deaths: 0,
+		confirmed: 0,
+		recovered: 0,
+		critical: 0,
+	},
 };
 
 const btnWorld = document.querySelector(".btnWorld");
@@ -25,7 +40,8 @@ const ctx = document.getElementById("myChart");
 
 let myChart = "";
 
-const generateChart = (data) => {
+const generateChart = (resData) => {
+	const data = [resData.deaths, resData.confirmed, resData.recovered, resData.critical];
 	if (myChart !== "") myChart.destroy();
 	myChart = new Chart(ctx, {
 		type: "bar",
@@ -62,34 +78,82 @@ const generateChart = (data) => {
 		},
 	});
 };
-
+const getRegionData = async (data, region) => {
+	let data2 = [];
+	const baseURLCovid = "https://corona-api.com/countries";
+	let ind = 0;
+	if (region !== "world") {
+		data.data.forEach((country, index) => {
+			axios.get(`${baseURLCovid}/${country.cca2}`).then((response) => {
+				regions[region].deaths += response.data.data.latest_data.deaths;
+				regions[region].confirmed += response.data.data.latest_data.confirmed;
+				regions[region].recovered += response.data.data.latest_data.recovered;
+				regions[region].critical += response.data.data.latest_data.critical;
+			});
+		});
+	} else {
+		countries = await axios.get(baseURLCovid, [
+			{
+				headers: "application/json",
+			},
+		]);
+		countries.data.data.forEach((country) => {
+			regions.world.deaths += country.latest_data.deaths;
+			regions.world.confirmed += country.latest_data.confirmed;
+			regions.world.recovered += country.latest_data.recovered;
+			regions.world.critical += country.latest_data.critical;
+		});
+		generateChart(regions.world);
+	}
+};
 const getCountries = async (region) => {
 	let data = [];
 	let countries;
-	// https://corona-api.com/countries/IL
-	if (regions[region].deaths === 0) {
-		console.log("Called API");
-		countries = await axios.get("https://restcountries.herokuapp.com/api/v1/region/asia", [
+	const baseURL = "https://restcountries.herokuapp.com/api/v1/";
+
+	console.log("Called API");
+	if (region !== "world") {
+		countries = await axios.get(`https://restcountries.herokuapp.com/api/v1/region/${region}`, [
 			{
-				headers: "access-control-allow-origin",
+				headers: "Access-Control-Allow-Origin *",
 			},
 		]);
-		// countries.data.data.forEach((country) => {
-		// 	regions[region].deaths += country.latest_data.deaths;
-		// 	regions[region].confirmed += country.latest_data.confirmed;
-		// 	regions[region].recovered += country.latest_data.recovered;
-		// 	regions[region].criticial += country.latest_data.criticial;
-		// });
+		getRegionData(countries, region);
+	} else {
+		getRegionData([], region);
 	}
 };
 btnWorld.addEventListener("click", () => {
-	getCountries("world").catch((err) => {
-		console.error(err.response);
-	});
+	generateChart(regions.world);
 });
 
 btnAfrica.addEventListener("click", () => {
+	generateChart(regions.africa);
+});
+btnAsia.addEventListener("click", () => {
+	generateChart(regions.asia);
+});
+btnAmerica.addEventListener("click", () => {
+	generateChart(regions.americas);
+});
+btnEurope.addEventListener("click", () => {
+	generateChart(regions.europe);
+});
+window.addEventListener("load", () => {
+	getCountries("world").catch((err) => {
+		console.error(err);
+	});
+
+	getCountries("asia").catch((err) => {
+		console.error(err);
+	});
 	getCountries("africa").catch((err) => {
+		console.error(err);
+	});
+	getCountries("europe").catch((err) => {
+		console.error(err);
+	});
+	getCountries("americas").catch((err) => {
 		console.error(err);
 	});
 });
