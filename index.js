@@ -108,13 +108,8 @@ const getCountries = async (region) => {
 	let data = [];
 	let countries;
 	const baseURL = "https://intense-mesa-62220.herokuapp.com/restcountries.herokuapp.com/api/v1/region/";
-	console.log("Called API");
 	if (region !== "world") {
-		countries = await axios.get(baseURL + region, [
-			{
-				headers: "Access-Control-Allow-Origin *",
-			},
-		]);
+		countries = await axios.get(baseURL + region);
 		getRegionData(countries, region);
 	} else {
 		getRegionData([], region);
