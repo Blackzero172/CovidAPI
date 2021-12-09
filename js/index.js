@@ -30,6 +30,12 @@ const regions = {
 		critical: 0,
 	},
 };
+const currentCountry = {
+	deaths: 0,
+	confirmed: 0,
+	recovered: 0,
+	critical: 0,
+};
 const btnWorld = document.querySelector(".btnWorld");
 const btnAsia = document.querySelector(".btnAsia");
 const btnAfrica = document.querySelector(".btnAfrica");
@@ -38,32 +44,21 @@ const btnEurope = document.querySelector(".btnEurope");
 const ctx = document.getElementById("myChart");
 
 let myChart = "";
-
-const generateChart = (resData) => {
+Chart.defaults.font.family = "Readex Pro";
+const generateChart = (resData, type) => {
+	if (type === "") type = "bar";
 	const data = [resData.deaths, resData.confirmed, resData.recovered, resData.critical];
 	if (myChart !== "") myChart.destroy();
 	myChart = new Chart(ctx, {
-		type: "bar",
+		type: type,
 		data: {
 			labels: ["Deaths", "Confirmed", "Recovered", "Critical"],
 			datasets: [
 				{
 					label: "# of Cases",
 					data: data,
-					backgroundColor: [
-						"rgba(255, 99, 132, 0.2)",
-						"rgba(54, 162, 235, 0.2)",
-						"rgba(255, 206, 86, 0.2)",
-						"rgba(75, 192, 192, 0.2)",
-						"rgba(153, 102, 255, 0.2)",
-					],
-					borderColor: [
-						"rgba(255, 99, 132, 1)",
-						"rgba(54, 162, 235, 1)",
-						"rgba(255, 206, 86, 1)",
-						"rgba(75, 192, 192, 1)",
-						"rgba(153, 102, 255, 1)",
-					],
+					backgroundColor: ["#3338", "#fb58", "#2f28", "#f558"],
+					borderColor: ["#333", "#fb5", "#2f2", "#f55"],
 					borderWidth: 1,
 				},
 			],
@@ -74,8 +69,13 @@ const generateChart = (resData) => {
 					beginAtZero: true,
 				},
 			},
+			maintainAspectRatio: false,
 		},
 	});
+	if (type === "pie" || type === "doughnut") {
+		myChart.options.scales.y.display = false;
+		myChart.update();
+	}
 };
 const getRegionData = async (data, region) => {
 	let data2 = [];
@@ -101,7 +101,7 @@ const getRegionData = async (data, region) => {
 			regions.world.recovered += country.latest_data.recovered;
 			regions.world.critical += country.latest_data.critical;
 		});
-		generateChart(regions.world);
+		generateChart(regions.world, "");
 	}
 };
 const getCountries = async (region) => {
@@ -115,27 +115,21 @@ const getCountries = async (region) => {
 		getRegionData([], region);
 	}
 };
-btnWorld.addEventListener("click", () => {
-	generateChart(regions.world);
-});
 
-btnAfrica.addEventListener("click", () => {
-	generateChart(regions.africa);
-});
-btnAsia.addEventListener("click", () => {
-	generateChart(regions.asia);
-});
-btnAmerica.addEventListener("click", () => {
-	generateChart(regions.americas);
-});
-btnEurope.addEventListener("click", () => {
-	generateChart(regions.europe);
+const buttonsList = document.querySelectorAll(".btn-container button");
+buttonsList.forEach((button) => {
+	button.addEventListener("click", () => {
+		generateChart(regions[button.getAttribute("data-region")]);
+		buttonsList.forEach((btn) => {
+			btn.id = "";
+		});
+		button.id = "selected";
+	});
 });
 window.addEventListener("load", () => {
 	getCountries("world").catch((err) => {
 		console.error(err);
 	});
-
 	getCountries("asia").catch((err) => {
 		console.error(err);
 	});
@@ -148,4 +142,31 @@ window.addEventListener("load", () => {
 	getCountries("americas").catch((err) => {
 		console.error(err);
 	});
+});
+const changeData = async () => {
+	const baseURL = "https://corona-api.com/countries/";
+	const data = await axios.get(baseURL + countrySelect.value);
+	console.log(data);
+	generateChart(data.data.data.latest_data, "");
+};
+const countrySelect = document.querySelector("#country");
+const populateSelect = async () => {
+	const baseURLCovid = "https://corona-api.com/countries";
+	const countries = await axios.get(baseURLCovid);
+	countries.data.data.forEach((country) => {
+		countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+	});
+};
+populateSelect();
+countrySelect.addEventListener("change", changeData);
+
+const chartType = document.querySelector("#chart-type");
+chartType.addEventListener("change", () => {
+	const data = {
+		deaths: myChart.data.datasets[0].data[0],
+		confirmed: myChart.data.datasets[0].data[1],
+		recovered: myChart.data.datasets[0].data[2],
+		critical: myChart.data.datasets[0].data[3],
+	};
+	generateChart(data, chartType.value);
 });

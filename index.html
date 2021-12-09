@@ -5,22 +5,40 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>COVID-19</title>
-		<link rel="stylesheet" href="./style.css" />
+		<link rel="stylesheet" href="css/style.css" />
 	</head>
 
 	<body>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
-		<div class="chart-container">
-			<canvas id="myChart" width="100" height="100"></canvas>
+		<div class="animation-container">
+			<header class="title">
+				<h2>COVID-Tracker</h2>
+			</header>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
+
+			<div class="btn-container">
+				<button class="btnWorld" type="button" id="selected" data-region="world">World</button>
+				<button class="btnAsia" type="button" data-region="asia">Asia</button>
+				<button class="btnAfrica" type="button" data-region="africa">Africa</button>
+				<button class="btnAmerica" type="button" data-region="americas">America</button>
+				<button class="btnEurope" type="button" data-region="europe">Europe</button>
+			</div>
+			<select name="country" id="country">
+				<option value="" hidden>Select a Country</option>
+			</select>
+			<div class="chart-container">
+				<canvas id="myChart" width="100" height="100"></canvas>
+			</div>
+			<div class="chart-type-select">
+				<div class="custom-select">
+					<select name="chart-type" id="chart-type">
+						<option value="bar">Bar</option>
+						<option value="pie">Pie</option>
+						<option value="doughnut">Doughnut</option>
+					</select>
+				</div>
+			</div>
+			<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+			<script src="js/index.js"></script>
 		</div>
-		<div class="btnContainer">
-			<button class="btnWorld" type="button">World</button>
-			<button class="btnAsia" type="button">Asia</button>
-			<button class="btnAfrica" type="button">Africa</button>
-			<button class="btnAmerica" type="button">America</button>
-			<button class="btnEurope" type="button">Europe</button>
-		</div>
-		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-		<script src="index.js"></script>
 	</body>
 </html>
