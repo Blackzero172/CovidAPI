@@ -30,7 +30,6 @@ const regions = {
 		critical: 0,
 	},
 };
-
 const btnWorld = document.querySelector(".btnWorld");
 const btnAsia = document.querySelector(".btnAsia");
 const btnAfrica = document.querySelector(".btnAfrica");
@@ -81,7 +80,6 @@ const generateChart = (resData) => {
 const getRegionData = async (data, region) => {
 	let data2 = [];
 	const baseURLCovid = "https://corona-api.com/countries";
-	let ind = 0;
 	if (region !== "world") {
 		data.data.forEach((country, index) => {
 			axios.get(`${baseURLCovid}/${country.cca2}`).then((response) => {
@@ -109,11 +107,10 @@ const getRegionData = async (data, region) => {
 const getCountries = async (region) => {
 	let data = [];
 	let countries;
-	const baseURL = "https://restcountries.herokuapp.com/api/v1/";
-
+	const baseURL = "https://intense-mesa-62220.herokuapp.com/restcountries.herokuapp.com/api/v1/region/";
 	console.log("Called API");
 	if (region !== "world") {
-		countries = await axios.get(`https://restcountries.herokuapp.com/api/v1/region/${region}`, [
+		countries = await axios.get(baseURL + region, [
 			{
 				headers: "Access-Control-Allow-Origin *",
 			},
