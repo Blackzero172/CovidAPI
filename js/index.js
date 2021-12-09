@@ -46,7 +46,6 @@ const ctx = document.getElementById("myChart");
 let myChart = "";
 Chart.defaults.font.family = "Readex Pro";
 const generateChart = (resData, type) => {
-	if (type === "") type = "bar";
 	const data = [resData.deaths, resData.confirmed, resData.recovered, resData.critical];
 	if (myChart !== "") myChart.destroy();
 	myChart = new Chart(ctx, {
@@ -101,7 +100,7 @@ const getRegionData = async (data, region) => {
 			regions.world.recovered += country.latest_data.recovered;
 			regions.world.critical += country.latest_data.critical;
 		});
-		generateChart(regions.world, "");
+		generateChart(regions.world, "bar");
 	}
 };
 const getCountries = async (region) => {
@@ -115,15 +114,16 @@ const getCountries = async (region) => {
 		getRegionData([], region);
 	}
 };
-
+const countrySelect = document.querySelector("#country");
 const buttonsList = document.querySelectorAll(".btn-container button");
 buttonsList.forEach((button) => {
 	button.addEventListener("click", () => {
-		generateChart(regions[button.getAttribute("data-region")]);
+		generateChart(regions[button.getAttribute("data-region")], myChart.config._config.type);
 		buttonsList.forEach((btn) => {
 			btn.id = "";
 		});
 		button.id = "selected";
+		countrySelect.value = "none";
 	});
 });
 window.addEventListener("load", () => {
@@ -147,9 +147,11 @@ const changeData = async () => {
 	const baseURL = "https://corona-api.com/countries/";
 	const data = await axios.get(baseURL + countrySelect.value);
 	console.log(data);
-	generateChart(data.data.data.latest_data, "");
+	generateChart(data.data.data.latest_data, myChart.config._config.type);
+	buttonsList.forEach((btn) => {
+		btn.id = "";
+	});
 };
-const countrySelect = document.querySelector("#country");
 const populateSelect = async () => {
 	const baseURLCovid = "https://corona-api.com/countries";
 	const countries = await axios.get(baseURLCovid);
