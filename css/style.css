@@ -103,6 +103,44 @@
 .btn-container button:active {
 	background: #666;
 }
+.search-bar {
+	width: 20%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.search-input {
+	width: 100%;
+	display: inline-block;
+	height: 3vh;
+	font-size: 1rem;
+	background: #9e9;
+	border: #333 2px solid;
+}
+.results-container {
+	position: absolute;
+	background: #ccc8;
+	top: 14%;
+	width: 30%;
+	border-radius: 10px;
+	overflow-y: scroll;
+	max-height: 20vh;
+}
+.border-class {
+	border: 5px #333 solid;
+}
+.results-container::-webkit-scrollbar {
+	display: none;
+}
+.results-container button {
+	width: 100%;
+	background: #9e9;
+	border: 2px black solid;
+}
+.results-container button:active {
+	background: #6b6;
+}
 
 @keyframes fadeIn {
 	from {

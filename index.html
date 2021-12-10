@@ -22,11 +22,10 @@
 					<button class="btnAmerica" type="button" data-region="americas">America</button>
 					<button class="btnEurope" type="button" data-region="europe">Europe</button>
 				</div>
-				<div class="custom-select">
-					<select name="country" id="country">
-						<option value="none" hidden>Select a Country</option>
-					</select>
-				</div>
+				<nav class="search-bar">
+					<input type="text" class="search-input" placeholder="Search for a Country..." />
+					<div class="results-container"></div>
+				</nav>
 			</div>
 			<div class="chart-container">
 				<canvas id="myChart" width="100" height="100"></canvas>
