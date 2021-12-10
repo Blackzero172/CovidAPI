@@ -6,6 +6,13 @@
 	box-sizing: border-box;
 	font-family: "Readex Pro", sans-serif;
 }
+html,
+body {
+	overflow-x: hidden;
+}
+.header {
+	width: 100%;
+}
 .title {
 	display: flex;
 	justify-content: center;
@@ -15,6 +22,7 @@
 .animation-container {
 	animation: fadeIn 3.5s ease 0s 1 forwards;
 	position: relative;
+	width: 100%;
 }
 .flex-container {
 	display: flex;
@@ -151,4 +159,27 @@
 		transform: translateY(0);
 		opacity: 1;
 	}
+}
+@media (max-width: 425px) {
+	.search-bar,
+	.results-container {
+		width: 50%;
+	}
+	.results-container {
+		top: 18%;
+	}
+	.chart-container {
+		height: 50vh;
+	}
+}
+@media (min-width: 426px) and (max-width: 768px) {
+	.search-bar,
+	.results-container {
+		width: 30%;
+	}
+	.results-container {
+		top: 14%;
+	}
+}
+@media (min-width: 769px) and (max-width: 1024px) {
 }

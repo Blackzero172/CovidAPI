@@ -203,3 +203,10 @@ const displayResults = (countriesList) => {
 	}
 };
 searchBar.addEventListener("input", search);
+searchBar.addEventListener("focusout", () => {
+	setTimeout(() => {
+		resultContainer.innerHTML = "";
+		resultContainer.classList.remove("border-class");
+	}, 500);
+});
+searchBar.addEventListener("focus", search);
