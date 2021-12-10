@@ -3,7 +3,7 @@ the hardest part about this project was setting up the fundemenatal API Calls
 
 more specifically when i started to combine 2 API together i ran into a couple of problems first being:
 
-
+------------------------------------------------------------------------------------------------------------------
 the Generate Chart function ran first:
 
 the first problem was that my generate chart function ran before i had the time to gather the neccesary information
@@ -18,7 +18,7 @@ and store that information into objects so that i can use that information later
 
 and without needing to wait for a response
 
-
+------------------------------------------------------------------------------------------------------------------
 Implementing a Search Bar:
 
 now when i first thought of implementing a search bar it seemed easy and at first it was everything worked fine until i started
