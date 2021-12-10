@@ -27,3 +27,11 @@ to run into unexpected bugs one of them being that the search results popup on e
 
 consuming and so my solution was to add a timeout on the calling of the display search results function and that worked like a charm
 
+-------------------------------------------------------------------------------------------------------------------
+Styling the Website:
+
+now i know what you're thinking,"what do you mean styling the website", just bear with me and you'll understand,what i mean is that 
+when i started styling the website i didn't have alot of content to work with and had to add a bunch of different things to fill up the page 
+for example i added in the ability to change the type of the chart also a search bar helped filling up the page and the probably the best feature
+this site has
+to chagne 
