@@ -35,4 +35,10 @@ this site has to offer
 Adding In Responsiveness:
 
 one of the things i encountered when adding in responsiveness was the fact that my screen had a white space on the right without an apparent reason
-i tried setting everything to 100% width also tried setting them to 100% viewport widths still nothing
+i tried setting everything to 100% width also tried setting them to 100% viewport widths still nothing and the solution came down to setting the overflow-x
+of the body and html to hidden and that magically fixed everything
+
+--------------------------------------------------------------------------------------------------------------------
+it's funny how sometimes we try to come up with the most brilliant solutions to find out that in reality the problem nor the solution is that complicated 
+and it just needed a few minutes of relaxed thinking,sometimes we need to take a break to give our mind back the ability to think straight because if we face
+a complicated problem then a simple one our mind will go with complicated solutions for both and mostly that's not good
