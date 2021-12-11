@@ -72,6 +72,7 @@ const generateChart = (resData, type) => {
 			maintainAspectRatio: false,
 		},
 	});
+
 	if (type === "pie" || type === "doughnut") {
 		myChart.options.scales.y.display = false;
 		myChart.update();
@@ -79,29 +80,37 @@ const generateChart = (resData, type) => {
 };
 const getRegionData = async (data, region) => {
 	const baseURLCovid = "https://corona-api.com/countries";
-	if (region !== "world") {
-		data.data.forEach((country) => {
-			axios.get(`${baseURLCovid}/${country.cca2}`).then((response) => {
-				regions[region].deaths += response.data.data.latest_data.deaths;
-				regions[region].confirmed += response.data.data.latest_data.confirmed;
-				regions[region].recovered += response.data.data.latest_data.recovered;
-				regions[region].critical += response.data.data.latest_data.critical;
+	if (window.localStorage.getItem(region) === null) {
+		if (region !== "world") {
+			data.data.forEach((country, index) => {
+				axios.get(`${baseURLCovid}/${country.cca2}`).then((response) => {
+					regions[region].deaths += response.data.data.latest_data.deaths;
+					regions[region].confirmed += response.data.data.latest_data.confirmed;
+					regions[region].recovered += response.data.data.latest_data.recovered;
+					regions[region].critical += response.data.data.latest_data.critical;
+					if (index >= data.data.length - 1) saveToStorage(region);
+				});
 			});
-		});
+		} else {
+			countries = await axios.get(baseURLCovid, [
+				{
+					headers: "application/json",
+				},
+			]);
+			countries.data.data.forEach((country) => {
+				regions.world.deaths += country.latest_data.deaths;
+				regions.world.confirmed += country.latest_data.confirmed;
+				regions.world.recovered += country.latest_data.recovered;
+				regions.world.critical += country.latest_data.critical;
+			});
+		}
 	} else {
-		countries = await axios.get(baseURLCovid, [
-			{
-				headers: "application/json",
-			},
-		]);
-		countries.data.data.forEach((country) => {
-			regions.world.deaths += country.latest_data.deaths;
-			regions.world.confirmed += country.latest_data.confirmed;
-			regions.world.recovered += country.latest_data.recovered;
-			regions.world.critical += country.latest_data.critical;
-		});
-		generateChart(regions.world, "bar");
+		regions[region] = JSON.parse(window.localStorage.getItem(region));
 	}
+	generateChart(regions.world, "bar");
+};
+const saveToStorage = (region) => {
+	window.localStorage.setItem(region, JSON.stringify(regions[region]));
 };
 const getCountries = async (region) => {
 	let countries;
