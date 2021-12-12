@@ -37,13 +37,9 @@ const currentCountry = {
 	critical: 0,
 };
 const searchCountries = [];
-const btnWorld = document.querySelector(".btnWorld");
-const btnAsia = document.querySelector(".btnAsia");
-const btnAfrica = document.querySelector(".btnAfrica");
-const btnAmerica = document.querySelector(".btnAmerica");
-const btnEurope = document.querySelector(".btnEurope");
 const ctx = document.getElementById("myChart");
-
+const countrySelect = document.querySelector("#country");
+const buttonsList = document.querySelectorAll(".btn-container button");
 let myChart = "";
 Chart.defaults.font.family = "Readex Pro";
 const generateChart = (resData, type) => {
@@ -122,8 +118,6 @@ const getCountries = async (region) => {
 		getRegionData([], region);
 	}
 };
-const countrySelect = document.querySelector("#country");
-const buttonsList = document.querySelectorAll(".btn-container button");
 buttonsList.forEach((button) => {
 	button.addEventListener("click", () => {
 		generateChart(regions[button.getAttribute("data-region")], myChart.config._config.type);
