@@ -42,3 +42,5 @@ of the body and html to hidden and that magically fixed everything
 it's funny how sometimes we try to come up with the most brilliant solutions to find out that in reality the problem nor the solution is that complicated 
 and it just needed a few minutes of relaxed thinking,sometimes we need to take a break to give our mind back the ability to think straight because if we face
 a complicated problem then a simple one our mind will go with complicated solutions for both and mostly that's not good
+
+Live Demo:https://covid19-dashboard-weekend.netlify.app/
